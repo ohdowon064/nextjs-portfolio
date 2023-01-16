@@ -1,3 +1,5 @@
+import Animation from "./animation";
+
 export default function Hero() {
   return (
     <>
@@ -22,7 +24,9 @@ export default function Hero() {
           </button>
         </div>
       </div>
-      <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6"></div>
+      <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
+        <Animation />
+      </div>
     </>
   );
 }
