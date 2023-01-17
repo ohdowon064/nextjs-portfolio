@@ -8,7 +8,7 @@ export default function Hero() {
         <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
           안녕하세요 오도원입니다!
         </h1>
-        <p className="mb-8 leading-relaxed">
+        <div className="mb-8 leading-relaxed">
           그러므로 않는 그들은 철환하였는가? 이상을 위하여서, 인도하겠다는
           피어나기 인간의 가진 간에 인간의 살았으며, 교향악이다. 무엇이 무엇을
           풍부하게 품에 영락과 때에, 봄바람이다. 것은 관현악이며, 공자는 능히
@@ -18,7 +18,7 @@ export default function Hero() {
           설산에서 가는 아름다우냐? 하는 꽃이 유소년에게서 품고 용감하고 이상은
           못하다 원질이 사는가 피다. 있음으로써 것은 눈에 꽃이 작고 칼이다.
           얼음에 곳이 가진 이상 안고, 피다.
-        </p>
+        </div>
         <div className="flex justify-center">
           <Link href="/projects">
             <button className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
