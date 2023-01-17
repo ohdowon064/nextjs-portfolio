@@ -7,7 +7,7 @@ export default function Footer() {
             <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
               <span className="ml-3 text-xl">오도원의 포트폴리오</span>
             </a>
-            <p className="text-sm text-gray-500 sm:ml-6 sm:mt-0 mt-4">
+            <div className="text-sm text-gray-500 sm:ml-6 sm:mt-0 mt-4">
               © 2020 Tailblocks —
               <a
                 href="https://twitter.com/knyttneve"
@@ -17,7 +17,7 @@ export default function Footer() {
               >
                 @knyttneve
               </a>
-            </p>
+            </div>
             <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
               <a className="text-gray-500">
                 <svg
