@@ -17,6 +17,10 @@ export default function Projects() {
   );
 }
 
+interface Project {
+  id: string;
+}
+
 // once at build time
 export async function getStaticProps() {
   const options = {
@@ -30,10 +34,18 @@ export async function getStaticProps() {
     body: JSON.stringify({ page_size: 100 }),
   };
 
-  fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, options)
-    .then((response) => response.json())
-    .then((response) => console.log(response))
-    .catch((err) => console.error(err));
+  const res = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, options)
+    // .then((response) => response.json())
+    // .then((response) => console.log(response))
+    // .catch((err) => console.error(err));
+
+  const projects = await res.json();
+  console.log(projects);
+
+  const projectIds = projects.results.map((project: Project) => project.id);
+  console.log(projectIds);
+
+
 
   return {
     props: {}, // will be passed to the page component as props
