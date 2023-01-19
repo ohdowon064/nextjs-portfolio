@@ -1,7 +1,7 @@
 import Layout from '@/components/layout';
 import Head from 'next/head';
 import { TOKEN, DATABASE_ID } from '@/config/index';
-import {ProjectItem, ProjectProps} from '@/components/projects/project-item';
+import { ProjectItem } from '@/components/projects/project-item';
 
 interface Project {
   id: string;
@@ -14,9 +14,11 @@ interface Project {
   };
 }
 
+type ProjectNamesProps = {
+  projectNames: string[];
+};
 
-
-export default function Projects({ projectNames }: ProjectProps) {
+export default function Projects({ projectNames }: ProjectNamesProps) {
   console.log(projectNames);
 
   return (
@@ -28,7 +30,9 @@ export default function Projects({ projectNames }: ProjectProps) {
       </Head>
       <section className="flex min-h-screen flex-col items-center text-gray-600 body-font">
         <h1>총 프로젝트: {projectNames.length} </h1>
-        <ProjectItem projectNames={projectNames}></ProjectItem>
+        {projectNames.map((projectName, index) => (
+          <ProjectItem key={index} projectName={projectName}></ProjectItem>
+        ))}
       </section>
     </Layout>
   );
