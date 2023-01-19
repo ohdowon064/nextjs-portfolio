@@ -1,8 +1,24 @@
 import Layout from '@/components/layout';
 import Head from 'next/head';
 import { TOKEN, DATABASE_ID } from '@/config/index';
+import {Project, ProjectProps} from '@/components/projects/project';
 
-export default function Projects() {
+interface Project {
+  id: string;
+  properties: {
+    Name: {
+      title: {
+        plain_text: string;
+      }[];
+    };
+  };
+}
+
+
+
+export default function Projects({ projectNames }: ProjectProps) {
+  console.log(projectNames);
+
   return (
     <Layout>
       <Head>
@@ -11,14 +27,11 @@ export default function Projects() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section className="flex min-h-screen flex-col items-center text-gray-600 body-font">
-        <h1>프로젝트</h1>
+        <h1>총 프로젝트: {projectNames.length} </h1>
+        <Project projectNames={projectNames}></Project>
       </section>
     </Layout>
   );
-}
-
-interface Project {
-  id: string;
 }
 
 // once at build time
@@ -31,23 +44,24 @@ export async function getStaticProps() {
       'content-type': 'application/json',
       authorization: `Bearer ${TOKEN}`,
     },
-    body: JSON.stringify({ page_size: 100 }),
+    body: JSON.stringify({
+      sorts: [{ timestamp: 'created_time', direction: 'descending' }],
+      page_size: 100,
+    }),
   };
 
-  const res = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, options)
-    // .then((response) => response.json())
-    // .then((response) => console.log(response))
-    // .catch((err) => console.error(err));
+  const res = await fetch(
+    `https://api.notion.com/v1/databases/${DATABASE_ID}/query`,
+    options,
+  );
 
   const projects = await res.json();
-  console.log(projects);
 
-  const projectIds = projects.results.map((project: Project) => project.id);
-  console.log(projectIds);
-
-
+  const projectNames = projects.results.map(
+    (project: Project) => project.properties.Name.title[0].plain_text,
+  );
 
   return {
-    props: {}, // will be passed to the page component as props
+    props: { projectNames }, // will be passed to the page component as props
   };
 }
