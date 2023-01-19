@@ -3,30 +3,8 @@ import Head from 'next/head';
 import { TOKEN, DATABASE_ID } from '@/config/index';
 import { ProjectItem } from '@/components/projects/project-item';
 
-type ProjectProps = {
-  id: string;
-  url: string;
-  created_time: Date;
-  last_edited_time: Date;
-  cover_url: string;
-  icon?: string;
-  field: {
-    Tags: {
-      name: string;
-      color: string;
-    }[];
-    Description?: string;
-    WorkPeriod: {
-      start?: Date;
-      end?: Date;
-    };
-    Github: string;
-    Name: string;
-  };
-};
-
 type ProjectItems = {
-  projectItems: ProjectProps[];
+  projectItems: ProjectItem[];
 };
 
 export default function Projects({ projectItems }: ProjectItems) {
@@ -40,10 +18,7 @@ export default function Projects({ projectItems }: ProjectItems) {
       <section className="flex min-h-screen flex-col items-center text-gray-600 body-font">
         <h1>총 프로젝트: {projectItems.length} </h1>
         {projectItems.map((projectItem, index) => (
-          <ProjectItem
-            key={index}
-            projectName={projectItem.field.Name}
-          ></ProjectItem>
+          <ProjectItem key={index} projectItem={projectItem}></ProjectItem>
         ))}
       </section>
     </Layout>
@@ -73,11 +48,7 @@ export async function getStaticProps() {
 
   const projects = await res.json();
 
-  const projectNames = projects.results.map(
-    (project: any) => project.properties.Name.title[0].plain_text,
-  );
-
-  const projectItems: ProjectProps[] = projects.results.map((project: any) => {
+  const projectItems: ProjectItem[] = projects.results.map((project: any) => {
     return {
       id: project.id,
       url: project.url,
@@ -85,7 +56,7 @@ export async function getStaticProps() {
       last_edited_time: project.last_edited_time,
       cover_url: project.cover.external.url,
       icon: project.icon?.emoji || null,
-      field: {
+      fields: {
         Tags:
           project.properties.Tags.multi_select.map((tag: any) => {
             return { name: tag.name, color: tag.color };
