@@ -15,7 +15,7 @@ type ProjectProps = {
       name: string;
       color: string;
     }[];
-    Description: string;
+    Description?: string;
     WorkPeriod: {
       start?: Date;
       end?: Date;
@@ -23,14 +23,13 @@ type ProjectProps = {
     Github: string;
     Name: string;
   };
-}
+};
 
 type ProjectItems = {
   projectItems: ProjectProps[];
-}
+};
 
 export default function Projects({ projectItems }: ProjectItems) {
-
   return (
     <Layout>
       <Head>
@@ -41,7 +40,10 @@ export default function Projects({ projectItems }: ProjectItems) {
       <section className="flex min-h-screen flex-col items-center text-gray-600 body-font">
         <h1>총 프로젝트: {projectItems.length} </h1>
         {projectItems.map((projectItem, index) => (
-          <ProjectItem key={index} projectName={projectItem.field.Name}></ProjectItem>
+          <ProjectItem
+            key={index}
+            projectName={projectItem.field.Name}
+          ></ProjectItem>
         ))}
       </section>
     </Layout>
@@ -82,22 +84,23 @@ export async function getStaticProps() {
       created_time: project.created_time,
       last_edited_time: project.last_edited_time,
       cover_url: project.cover.external.url,
-      icon: project.icon?.emoji,
+      icon: project.icon?.emoji || null,
       field: {
-        Tags: project.properties.Tags.multi_select.map((tag: any) => {
-          name: tag.name;
-          color: tag.color;
-        }),
+        Tags:
+          project.properties.Tags.multi_select.map((tag: any) => {
+            return { name: tag.name, color: tag.color };
+          }) || [],
         Description: project.properties.Description.rich_text[0].plain_text,
         WorkPeriod: {
-          start: project.properties.WorkPeriod.date?.start,
-          end: project.properties.WorkPeriod.date?.end,
+          start: project.properties.WorkPeriod.date?.start || null,
+          end: project.properties.WorkPeriod.date?.end || null,
         },
-        Github: project.properties.Github.url,
+        Github: project.properties.Github.url || 'Private',
         Name: project.properties.Name.title[0].plain_text,
       },
     };
   });
+
   console.log(projectItems);
 
   return {
