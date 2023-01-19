@@ -3,23 +3,33 @@ import Head from 'next/head';
 import { TOKEN, DATABASE_ID } from '@/config/index';
 import { ProjectItem } from '@/components/projects/project-item';
 
-interface Project {
+type ProjectProps = {
   id: string;
-  properties: {
-    Name: {
-      title: {
-        plain_text: string;
-      }[];
+  url: string;
+  created_time: Date;
+  last_edited_time: Date;
+  cover_url: string;
+  icon?: string;
+  field: {
+    Tags: {
+      name: string;
+      color: string;
+    }[];
+    Description: string;
+    WorkPeriod: {
+      start?: Date;
+      end?: Date;
     };
+    Github: string;
+    Name: string;
   };
 }
 
-type ProjectNamesProps = {
-  projectNames: string[];
-};
+type ProjectItems = {
+  projectItems: ProjectProps[];
+}
 
-export default function Projects({ projectNames }: ProjectNamesProps) {
-  console.log(projectNames);
+export default function Projects({ projectItems }: ProjectItems) {
 
   return (
     <Layout>
@@ -29,9 +39,9 @@ export default function Projects({ projectNames }: ProjectNamesProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section className="flex min-h-screen flex-col items-center text-gray-600 body-font">
-        <h1>총 프로젝트: {projectNames.length} </h1>
-        {projectNames.map((projectName, index) => (
-          <ProjectItem key={index} projectName={projectName}></ProjectItem>
+        <h1>총 프로젝트: {projectItems.length} </h1>
+        {projectItems.map((projectItem, index) => (
+          <ProjectItem key={index} projectName={projectItem.field.Name}></ProjectItem>
         ))}
       </section>
     </Layout>
@@ -62,10 +72,35 @@ export async function getStaticProps() {
   const projects = await res.json();
 
   const projectNames = projects.results.map(
-    (project: Project) => project.properties.Name.title[0].plain_text,
+    (project: any) => project.properties.Name.title[0].plain_text,
   );
 
+  const projectItems: ProjectProps[] = projects.results.map((project: any) => {
+    return {
+      id: project.id,
+      url: project.url,
+      created_time: project.created_time,
+      last_edited_time: project.last_edited_time,
+      cover_url: project.cover.external.url,
+      icon: project.icon?.emoji,
+      field: {
+        Tags: project.properties.Tags.multi_select.map((tag: any) => {
+          name: tag.name;
+          color: tag.color;
+        }),
+        Description: project.properties.Description.rich_text[0].plain_text,
+        WorkPeriod: {
+          start: project.properties.WorkPeriod.date?.start,
+          end: project.properties.WorkPeriod.date?.end,
+        },
+        Github: project.properties.Github.url,
+        Name: project.properties.Name.title[0].plain_text,
+      },
+    };
+  });
+  console.log(projectItems);
+
   return {
-    props: { projectNames }, // will be passed to the page component as props
+    props: { projectItems }, // will be passed to the page component as props
   };
 }
