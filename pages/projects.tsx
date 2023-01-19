@@ -1,7 +1,7 @@
 import Layout from '@/components/layout';
 import Head from 'next/head';
 import { TOKEN, DATABASE_ID } from '@/config/index';
-import {Project, ProjectProps} from '@/components/projects/project';
+import {ProjectItem, ProjectProps} from '@/components/projects/project-item';
 
 interface Project {
   id: string;
@@ -28,7 +28,7 @@ export default function Projects({ projectNames }: ProjectProps) {
       </Head>
       <section className="flex min-h-screen flex-col items-center text-gray-600 body-font">
         <h1>총 프로젝트: {projectNames.length} </h1>
-        <Project projectNames={projectNames}></Project>
+        <ProjectItem projectNames={projectNames}></ProjectItem>
       </section>
     </Layout>
   );

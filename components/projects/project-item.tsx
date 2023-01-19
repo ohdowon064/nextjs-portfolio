@@ -2,7 +2,7 @@ export type ProjectProps = {
   projectNames: string[];
 };
 
-export default function Project({ projectNames }: ProjectProps) {
+export function ProjectItem({ projectNames }: ProjectProps) {
   return (
     <div className="p-6 bg-slate-400 rounded-md">
       {projectNames.map((projectName, index) => (
