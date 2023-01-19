@@ -1,11 +1,12 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export type ProjectItem = {
   id: string;
   url: string;
-  created_time: Date;
-  last_edited_time: Date;
-  cover_url: string;
+  createdAt: Date;
+  updatedAt: Date;
+  coverUrl: string;
   icon?: string;
   fields: {
     Tags: {
@@ -27,14 +28,27 @@ type ProjectProps = {
 };
 
 export function ProjectItem({ projectItem }: ProjectProps) {
+  const title = projectItem.fields.Name;
+  const description = projectItem.fields.Description;
+  const github = projectItem.fields.Github;
+  const tags = projectItem.fields.Tags;
+  const workPeriod = projectItem.fields.WorkPeriod;
+  const coverUrl = projectItem.coverUrl;
+
   return (
-    <div className="p-6 m-3 bg-slate-700 rounded-md">
-      <h1>{projectItem.fields.Name}</h1>
-      {projectItem.fields.Github != 'Private' ? (
-        <Link href={projectItem.fields.Github}>깃허브 바로가기</Link>
+    <div className="flex flex-col p-6 m-3 bg-slate-700 rounded-md">
+      <h1>{title}</h1>
+      <Image 
+        src={coverUrl}
+        width="100%"
+        height="60%"
+      />
+      {github != 'Private' ? (
+        <Link href={github}>깃허브 바로가기</Link>
       ) : (
-        <h1>프라이빗 프로젝트</h1>
+        <h1>Private Project</h1>
       )}
+      <h3>{description}</h3>
     </div>
   );
 }
