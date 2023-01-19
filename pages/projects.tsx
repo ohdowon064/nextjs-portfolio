@@ -52,9 +52,9 @@ export async function getStaticProps() {
     return {
       id: project.id,
       url: project.url,
-      created_time: project.created_time,
-      last_edited_time: project.last_edited_time,
-      cover_url: project.cover.external.url,
+      createdAt: project.created_time,
+      updatedAt: project.last_edited_time,
+      coverUrl: project.cover.external.url,
       icon: project.icon?.emoji || null,
       fields: {
         Tags:
