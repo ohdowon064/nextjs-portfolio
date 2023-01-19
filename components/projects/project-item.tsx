@@ -6,7 +6,7 @@ export type ProjectItem = {
   url: string;
   createdAt: Date;
   updatedAt: Date;
-  coverUrl: string;
+  coverUrl?: string;
   icon?: string;
   fields: {
     Tags: {
@@ -38,11 +38,15 @@ export function ProjectItem({ projectItem }: ProjectProps) {
   return (
     <div className="flex flex-col p-6 m-3 bg-slate-700 rounded-md">
       <h1>{title}</h1>
-      <Image 
-        src={coverUrl}
-        width="100%"
-        height="60%"
-      />
+      {coverUrl != null && (
+        <Image
+          src={coverUrl}
+          alt="프로젝트 커버이미지 입니다."
+          width={100}
+          height={60}
+        />
+      )}
+
       {github != 'Private' ? (
         <Link href={github}>깃허브 바로가기</Link>
       ) : (
