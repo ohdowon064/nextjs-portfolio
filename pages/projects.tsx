@@ -54,7 +54,7 @@ export async function getStaticProps() {
       url: project.url,
       createdAt: project.created_time,
       updatedAt: project.last_edited_time,
-      coverUrl: project.cover.external.url,
+      coverUrl: project.cover?.external?.url || project.cover?.file.url || null,
       icon: project.icon?.emoji || null,
       fields: {
         Tags:
